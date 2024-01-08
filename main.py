@@ -28,7 +28,8 @@ discriminator = userinfo["discriminator"]
 userid = userinfo["id"]
 
 def onliner(token, status):
-    ws = websocket.create_connection("wss://gateway.discordapp.com/?v=9&encoding=json")
+ws = websocket.WebSocketApp("wss://gateway.discordapp.com/?v=9&encoding=json", on_open=on_open, on_message=on_message, on_close=on_close)
+ws.run_forever()
     start = json.loads(ws.recv())
     heartbeat = start["d"]["heartbeat_interval"]
     auth = {
