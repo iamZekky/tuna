@@ -77,5 +77,6 @@ async def run_onliner():
         await onliner(usertoken, status)
         await asyncio.sleep(30)
 
-keep_alive()
-run_onliner()
+import asyncio
+asyncio.run(run_onliner())
+asyncio.run(keep_alive())
