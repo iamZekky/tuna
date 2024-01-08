@@ -27,9 +27,18 @@ username = userinfo["username"]
 discriminator = userinfo["discriminator"]
 userid = userinfo["id"]
 
+# Define on_open, on_message, and on_close functions
+def on_open(ws):
+    print("WebSocket connection opened")
+
+def on_message(ws, message):
+    print("Received message:", message)
+
+def on_close(ws, close_status_code, close_msg):
+    print("WebSocket connection closed")
+
 def onliner(token, status):
-ws = websocket.WebSocketApp("wss://gateway.discordapp.com/?v=9&encoding=json", on_open=on_open, on_message=on_message, on_close=on_close)
-ws.run_forever()
+    ws = websocket.WebSocketApp("wss://gateway.discordapp.com/?v=9&encoding=json", on_open=on_open, on_message=on_message, on_close=on_close)
     start = json.loads(ws.recv())
     heartbeat = start["d"]["heartbeat_interval"]
     auth = {
