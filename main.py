@@ -38,7 +38,8 @@ def on_close(ws, close_status_code, close_msg):
     print("WebSocket connection closed")
 
 def onliner(token, status):
-    ws = websocket.WebSocketApp("wss://gateway.discordapp.com/?v=9&encoding=json", on_open=on_open, on_message=on_message, on_close=on_close)
+    ws = websocket.WebSocket()
+    ws.connect("wss://gateway.discordapp.com/?v=9&encoding=json")
     start = json.loads(ws.recv())
     heartbeat = start["d"]["heartbeat_interval"]
     auth = {
@@ -66,12 +67,6 @@ def onliner(token, status):
                     "state": custom_status,
                     "name": "Custom Status",
                     "id": "custom",
-                    # Uncomment the below lines if you want an emoji in the status
-                    # "emoji": {
-                    #     "name": "emoji name",
-                    #     "id": "emoji id",
-                    #     "animated": False,
-                    # },
                 }
             ],
             "status": status,
