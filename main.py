@@ -6,9 +6,9 @@ import requests
 import websocket
 from keep_alive import keep_alive
 
-status = "online" #online/dnd/idle
+status = "dnd"  # online/dnd/idle
 
-custom_status = "youtube.com/@SealedSaucer" #If you don't need a custom status on your profile, just put "" instead of "youtube.com/@SealedSaucer"
+custom_status = "Discord.gg/SpicyCode"  # If you don't need a custom status on your profile, just put "" instead of "youtube.com/@SealedSaucer"
 
 usertoken = os.getenv("TOKEN")
 if not usertoken:
@@ -28,8 +28,7 @@ discriminator = userinfo["discriminator"]
 userid = userinfo["id"]
 
 def onliner(token, status):
-    ws = websocket.WebSocket()
-    ws.connect("wss://gateway.discord.gg/?v=9&encoding=json")
+    ws = websocket.create_connection("wss://gateway.discordapp.com/?v=9&encoding=json")
     start = json.loads(ws.recv())
     heartbeat = start["d"]["heartbeat_interval"]
     auth = {
@@ -57,12 +56,12 @@ def onliner(token, status):
                     "state": custom_status,
                     "name": "Custom Status",
                     "id": "custom",
-                    #Uncomment the below lines if you want an emoji in the status
-                    #"emoji": {
-                        #"name": "emoji name",
-                        #"id": "emoji id",
-                        #"animated": False,
-                    #},
+                    # Uncomment the below lines if you want an emoji in the status
+                    # "emoji": {
+                    #     "name": "emoji name",
+                    #     "id": "emoji id",
+                    #     "animated": False,
+                    # },
                 }
             ],
             "status": status,
@@ -73,6 +72,7 @@ def onliner(token, status):
     online = {"op": 1, "d": "None"}
     time.sleep(heartbeat / 1000)
     ws.send(json.dumps(online))
+    ws.close()
 
 def run_onliner():
     os.system("clear")
