@@ -3,7 +3,7 @@ import sys
 import json
 import time
 import requests
-import websocket
+import websockets  # Add this line
 from keep_alive import keep_alive
 
 status = "dnd"  # online/dnd/idle
