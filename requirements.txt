@@ -1,5 +1,3 @@
 requests
-websocket
-websockets
 websocket-client
-Flask
+
