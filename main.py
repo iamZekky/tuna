@@ -15,6 +15,8 @@ if not usertoken:
     print("[ERROR] Please add a token inside Secrets.")
     sys.exit()
 
+headers = {"Authorization": usertoken, "Content-Type": "application/json"}
+
 validate = requests.get('https://discordapp.com/api/v9/users/@me', headers=headers)
 if validate.status_code != 200:
     print("[ERROR] Your token might be invalid. Please check it again.")
