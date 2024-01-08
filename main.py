@@ -9,7 +9,7 @@ status = "dnd"
 custom_status = "Discord.gg/SpicyCode"
 
 token = os.getenv("TOKEN")
-if not usertoken:
+if not token:
     print("[ERROR] Please add a token inside Secrets.")
     sys.exit()
 
