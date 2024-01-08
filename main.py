@@ -1,12 +1,18 @@
-import config
+import os
 import json
 import time
 import websocket
 import requests
-
+from keep_alive import keep_alive
 status = "dnd"
-token = config.token
+
 custom_status = "Discord.gg/SpicyCode"
+
+usertoken = os.getenv("TOKEN")
+if not usertoken:
+    print("[ERROR] Please add a token inside Secrets.")
+    sys.exit()
+
 headers = {"Authorization": token, "Content-Type": "application/json"}
 userinfo = requests.get('https://discordapp.com/api/v9/users/@me', headers=headers).json()
 username = userinfo["username"]
@@ -67,3 +73,4 @@ def run_keep_online():
         time.sleep(30)
 
 run_keep_online()
+keep_alive()
