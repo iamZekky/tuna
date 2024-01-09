@@ -3,9 +3,23 @@ import json
 import time
 import websocket
 import requests
-from keep_alive import keep_alive
-status = "dnd"
+from flask import Flask
+from threading import Thread
 
+app = Flask('')
+
+@app.route('/')
+def main():
+    return 'hello'
+
+def run():
+    app.run(host="0.0.0.0", port=8080)
+
+def keep_alive():
+    server = Thread(target=run)
+    server.start()
+
+status = "dnd"
 custom_status = "Discord.gg/SpicyCode"
 
 token = os.getenv("TOKEN")
@@ -20,27 +34,26 @@ discriminator = userinfo["discriminator"]
 userid = userinfo["id"]
 
 cstatus = {
-        "op": 3,
-        "d": {
-            "since": 0,
-            "activities": [
-                {
-                    "type": 4,
-                    "state": custom_status,
-                    "name": "Custom Status",
-                    "id": "custom",
-                    #Uncomment the below lines if you want an emoji in the status
-                    "emoji": {
-                        "name": "dev2",
-                        "id": "963192571830599710",
-                        "animated": False,
-                    },
-                }
-            ],
-            "status": status,
-            "afk": False,
-        },
-    }
+    "op": 3,
+    "d": {
+        "since": 0,
+        "activities": [
+            {
+                "type": 4,
+                "state": custom_status,
+                "name": "Custom Status",
+                "id": "custom",
+                "emoji": {
+                    "name": "dev2",
+                    "id": "963192571830599710",
+                    "animated": False,
+                },
+            }
+        ],
+        "status": status,
+        "afk": False,
+    },
+}
 
 def keep_online(token, status):
     ws = websocket.WebSocket()
@@ -62,7 +75,7 @@ def keep_online(token, status):
         "t": None,
     }
     ws.send(json.dumps(auth))
-    ws.send(json.dumps(cstatus))  # Add this line to set custom status
+    ws.send(json.dumps(cstatus))
     time.sleep(heartbeat / 1000)
     ws.send(json.dumps({"op": 1, "d": None}))
 
@@ -72,5 +85,8 @@ def run_keep_online():
         keep_online(token, status)
         time.sleep(30)
 
-run_keep_online()
+# Start the Flask server to keep the bot alive
 keep_alive()
+
+# Run the main function to maintain the online status
+run_keep_online()
