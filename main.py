@@ -29,7 +29,17 @@ if not token:
 
 headers = {"Authorization": token, "Content-Type": "application/json"}
 userinfo = requests.get('https://discordapp.com/api/v9/users/@me', headers=headers).json()
-username = userinfo["username"]
+
+# Print the userinfo to see its structure
+print(userinfo)
+
+# Check if the 'username' key is present in the userinfo
+if 'username' in userinfo:
+    username = userinfo["username"]
+else:
+    print("[ERROR] 'username' key not found in userinfo.")
+    sys.exit()
+
 discriminator = userinfo["discriminator"]
 userid = userinfo["id"]
 
